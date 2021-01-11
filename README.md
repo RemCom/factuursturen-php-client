@@ -1,4 +1,4 @@
-![CI](https://github.com/Ultiweb-nl/factuursturen-php-client/workflows/CI/badge.svg)
+![stability-wip](https://img.shields.io/badge/stability-work_in_progress-lightgrey.svg) ![Unit Tests](https://github.com/Ultiweb-nl/factuursturen-php-client/workflows/Unit%20Tests/badge.svg) [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs) 
 
 # factuursturen-php-client
 
@@ -9,7 +9,7 @@ An unofficial client for the Factuursturen/DigiRechnung API.
 This project can easily be installed through Composer.
 
 ```
-composer require ultiweb-nl//factuursturen-php-client
+composer require ultiweb-nl/factuursturen-php-client
 ```
 
 ## Set-up connection
