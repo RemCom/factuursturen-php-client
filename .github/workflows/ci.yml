@@ -2,9 +2,9 @@ name: Unit Tests
 
 on:
   push:
-    branches: [ main,development ]
+    branches: [ master,development ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   provide_php_versions_json:

@@ -34,7 +34,13 @@ trait Storable
      */
     public function insert()
     {
-        return $this->connection()->post($this->url, $this->json());
+        $result =  $this->connection()->post($this->url, $this->json());
+
+        if (!array_key_exists($this->namespaces['singular'], $result)) {
+            return null;
+        }
+
+        return $result[$this->namespaces['singular']];
     }
 
     /**
@@ -44,7 +50,13 @@ trait Storable
      */
     public function update()
     {
-        return $this->connection()->put($this->url . '/' . urlencode($this->{$this->primaryKey}), $this->json());
+        $result =  $this->connection()->put($this->url . '/' . urlencode($this->{$this->primaryKey}), $this->json(), $this->{$this->primaryKey});
+
+        if (!array_key_exists($this->namespaces['singular'], $result)) {
+            return null;
+        }
+        
+        return $result[$this->namespaces['singular']];
     }
 
     /**

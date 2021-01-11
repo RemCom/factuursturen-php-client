@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 use UltiwebNL\FactuurSturenPhpClient\Exceptions\FactuurSturenException;
 use UltiwebNL\FactuurSturenPhpClient\Exceptions\FactuurSturenNoCredentialsException;
 
@@ -85,11 +84,8 @@ class Connection
 
             return $this->parseResponse($result);
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $this->parseResponse($e->getResponse());
-            }
-
-            throw new FactuurSturenException('FactuurSturen error: (no error message provided)' . $e->getResponse(), $e->getResponse()->getStatusCode());
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            throw new FactuurSturenException(sprintf('SendCloud error %s: %s', $e->getResponse()->getStatusCode(), $responseBody), $e->getResponse()->getStatusCode());
         }
     }
 
@@ -105,13 +101,15 @@ class Connection
     {
         try {
             $result = $this->client()->post($url, ['body' => $body]);
+
+            $id = $this->parseResponse($result);
+
+            $result = $this->client()->get($url . '/' . $id);
+
             return $this->parseResponse($result);
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $this->parseResponse($e->getResponse());
-            }
-
-            throw new FactuurSturenException('FactuurSturen error: (no error message provided)' . $e->getResponse(), $e->getResponse()->getStatusCode());
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            throw new FactuurSturenException(sprintf('SendCloud error %s: %s', $e->getResponse()->getStatusCode(), $responseBody), $e->getResponse()->getStatusCode());
         }
     }
 
@@ -123,17 +121,17 @@ class Connection
      * @throws FactuurSturenException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function put($url, $body): array
+    public function put($url, $body, $id): array
     {
         try {
             $result = $this->client()->put($url, ['body' => $body]);
+            $this->parseResponse($result);
+
+            $result = $this->client()->get($url . '/' . $id);
             return $this->parseResponse($result);
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $this->parseResponse($e->getResponse());
-            }
-
-            throw new FactuurSturenException('FactuurSturen error: (no error message provided)' . $e->getResponse(), $e->getResponse()->getStatusCode());
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            throw new FactuurSturenException(sprintf('SendCloud error %s: %s', $e->getResponse()->getStatusCode(), $responseBody), $e->getResponse()->getStatusCode());
         }
     }
 
@@ -150,11 +148,8 @@ class Connection
             $result = $this->client()->delete($url);
             return $this->parseResponse($result);
         } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $this->parseResponse($e->getResponse());
-            }
-
-            throw new FactuurSturenException('FactuurSturen error: (no error message provided)' . $e->getResponse(), $e->getResponse()->getStatusCode());
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            throw new FactuurSturenException(sprintf('SendCloud error %s: %s', $e->getResponse()->getStatusCode(), $responseBody), $e->getResponse()->getStatusCode());
         }
     }
 
@@ -165,28 +160,13 @@ class Connection
      */
     public function parseResponse(ResponseInterface $response)
     {
-        try {
-            // Rewind the response (middlewares might have read it already)
-            $response->getBody()->rewind();
+        // Rewind the response (middlewares might have read it already)
+        $response->getBody()->rewind();
 
-            $responseBody = $response->getBody()->getContents();
-            $resultArray = json_decode($responseBody, true);
+        $responseBody = $response->getBody()->getContents();
+        $resultArray = json_decode($responseBody, true);
 
 
-            if (!is_array($resultArray)) {
-                throw new FactuurSturenException(sprintf('FactuurSturen error %s: %s', $response->getStatusCode(), $responseBody), $response->getStatusCode());
-            }
-
-            if (array_key_exists('error', $resultArray)
-                && is_array($resultArray['error'])
-                && array_key_exists('message', $resultArray['error'])
-            ) {
-                throw new FactuurSturenException('FactuurSturen error: ' . $resultArray['error']['message'], $resultArray['error']['code']);
-            }
-
-            return $resultArray;
-        } catch (RuntimeException $e) {
-            throw new FactuurSturenException('FactuurSturen error: ' . $e->getMessage());
-        }
+        return $resultArray;
     }
 }
