@@ -21,7 +21,7 @@ use UltiwebNL\FactuurSturenPhpClient\Traits\Storable;
  * @property int clientnr'
  * @property string sent'
  * @property string paiddate
- * 
+ *
  * @package UltiwebNL\FactuurSturenPhpClient\Models
  */
 class Invoices extends Model

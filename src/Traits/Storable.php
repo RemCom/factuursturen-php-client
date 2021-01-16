@@ -58,5 +58,4 @@ trait Storable
         
         return $result[$this->namespaces['singular']];
     }
-    
 }
