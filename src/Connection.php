@@ -166,7 +166,6 @@ class Connection
         $responseBody = $response->getBody()->getContents();
         $resultArray = json_decode($responseBody, true);
 
-
         return $resultArray;
     }
 }

@@ -14,11 +14,11 @@
   "authors": [
     {
       "name": "Remco van Essen",
-      "email": "info@ultiweb.nl"
+      "email": "remco@productflow.com"
     }
   ],
   "require": {
-    "php": ">=7.4.0",
+    "php": ">=7.3",
     "guzzlehttp/guzzle": "~6.0|~7.0",
     "ext-json": "*"
   },

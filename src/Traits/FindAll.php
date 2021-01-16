@@ -34,7 +34,7 @@ trait FindAll
         $collection = [];
 
         foreach ($result as $r) {
-            $collection[] = new self($this->connection(), $r);
+            $collection[] = new self($this->connection(), $r, true);
         }
 
         return $collection;

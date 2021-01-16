@@ -27,6 +27,6 @@ trait FindOne
             return null;
         }
 
-        return new self($this->connection(), $result[$this->namespaces['singular']]);
+        return new self($this->connection(), $result[$this->namespaces['singular']], true);
     }
 }

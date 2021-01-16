@@ -2,8 +2,13 @@
 
 namespace UltiwebNL\FactuurSturenPhpClient;
 
+use UltiwebNL\FactuurSturenPhpClient\Models\Categories;
 use UltiwebNL\FactuurSturenPhpClient\Models\Clients;
 use UltiwebNL\FactuurSturenPhpClient\Models\Invoices;
+use UltiwebNL\FactuurSturenPhpClient\Models\Products;
+use UltiwebNL\FactuurSturenPhpClient\Models\Profiles;
+use UltiwebNL\FactuurSturenPhpClient\Models\Quotation;
+use UltiwebNL\FactuurSturenPhpClient\Models\InvoicesPayment;
 
 /**
  * Class FactuurSturen
@@ -72,5 +77,48 @@ class FactuurSturen
     public function clients(): Clients
     {
         return new Clients($this->getConnection());
+    }
+
+    /**
+     * @return Products
+     * @throws Exceptions\FactuurSturenNoCredentialsException
+     */
+    public function products(): Products
+    {
+        return new Products($this->getConnection());
+    }
+    
+    /**
+     * @return InvoicesPayment
+     * @throws Exceptions\FactuurSturenNoCredentialsException
+     */
+    public function InvoicesPayment(): InvoicesPayment
+    {
+        return new InvoicesPayment($this->getConnection());
+    }
+
+
+
+
+
+
+
+
+    /**
+     * @return InvoicesPayment
+     * @throws Exceptions\FactuurSturenNoCredentialsException
+     */
+    public function Categories(): Categories
+    {
+        return new Categories($this->getConnection());
+    }
+    
+    /**
+     * @return InvoicesPayment
+     * @throws Exceptions\FactuurSturenNoCredentialsException
+     */
+    public function Profiles(): Profiles
+    {
+        return new Profiles($this->getConnection());
     }
 }

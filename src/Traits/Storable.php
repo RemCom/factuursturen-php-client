@@ -58,14 +58,5 @@ trait Storable
         
         return $result[$this->namespaces['singular']];
     }
-
-    /**
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \UltiwebNL\FactuurSturenPhpClient\Exceptions\FactuurSturenException
-     */
-    public function delete()
-    {
-        return $this->connection()->delete($this->url . '/' . urlencode($this->{$this->primaryKey}));
-    }
+    
 }

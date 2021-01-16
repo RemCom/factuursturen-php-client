@@ -4,7 +4,6 @@ namespace UltiwebNL\FactuurSturenPhpClient\Models;
 
 use UltiwebNL\FactuurSturenPhpClient\Traits\FindAll;
 use UltiwebNL\FactuurSturenPhpClient\Traits\FindOne;
-use UltiwebNL\FactuurSturenPhpClient\Traits\Storable;
 
 /**
  * Class Invoices
@@ -21,36 +20,23 @@ use UltiwebNL\FactuurSturenPhpClient\Traits\Storable;
  * @property int clientnr'
  * @property string sent'
  * @property string paiddate
- * 
+ *
  * @package UltiwebNL\FactuurSturenPhpClient\Models
  */
-class Invoices extends Model
+class InvoicesSaved extends Model
 {
 
-    use FindOne, FindAll, Storable;
+    use FindOne, FindAll;
 
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'invoicenr',
-        'reference',
-        'lines',
-        'profile',
-        'category',
-        'discounttype',
-        'discount',
-        'paymentcondition',
-        'paymentperiod',
-        'clientnr',
-        'sent',
-        'paiddate'
-    ];
+    protected $fillable = [];
 
     /**
      * @var string
      */
-    protected $url = 'invoices';
+    protected $url = 'invoices_saved';
 
     /**
      * @var string
@@ -61,7 +47,7 @@ class Invoices extends Model
      * @var string[]
      */
     protected $namespaces = [
-        'singular' => 'invoice',
-        'plural' => 'invoices'
+        'singular' => 'invoices_saved',
+        'plural' => 'invoices_saved'
     ];
 }

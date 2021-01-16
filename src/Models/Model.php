@@ -49,10 +49,10 @@ abstract class Model
      * @param connection $connection
      * @param array $attributes
      */
-    public function __construct(Connection $connection, array $attributes = [])
+    public function __construct(Connection $connection, array $attributes = [], bool $api_result = false)
     {
         $this->connection = $connection;
-        $this->fill($attributes);
+        $this->fill($attributes, $api_result);
     }
 
     /**
@@ -80,13 +80,17 @@ abstract class Model
      *
      * @param array $attributes
      */
-    protected function fill(array $attributes)
+    protected function fill(array $attributes, bool $api_result)
     {
-
-
-        foreach ($this->fillableFromArray($attributes) as $key => $value) {
-            if ($this->isFillable($key)) {
+        if ($api_result) {
+            foreach ($attributes as $key => $value) {
                 $this->setAttribute($key, $value);
+            }
+        } else {
+            foreach ($this->fillableFromArray($attributes) as $key => $value) {
+                if ($this->isFillable($key)) {
+                    $this->setAttribute($key, $value);
+                }
             }
         }
     }
@@ -191,8 +195,8 @@ abstract class Model
     public function __debugInfo()
     {
         $result = [];
-        foreach ($this->fillable as $attribute) {
-            $result[$attribute] = $this->$attribute;
+        foreach ($this->attributes() as $key => $value) {
+            $result[$key] = $value;
         }
         return $result;
     }
